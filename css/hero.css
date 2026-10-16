@@ -1,0 +1,472 @@
+/* ==========================================================================
+   Hero: 3D-логотип со сканером-интроскопом
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(230px, 290px) 1fr minmax(240px, 300px);
+  grid-template-rows: 1fr auto auto;
+  column-gap: 32px;
+  min-height: max(100svh, 760px);
+  padding: calc(var(--nav-h) + 24px) var(--gutter) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(52% 46% at 50% 42%, rgb(124 58 237 / 0.3), transparent 72%),
+    radial-gradient(26% 20% at 50% 76%, rgb(212 197 255 / 0.1), transparent 70%),
+    var(--c-black);
+}
+
+/* Тонкая сетка колонок, как на редакционных макетах */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0 var(--gutter);
+  z-index: -1;
+  background-image: linear-gradient(to right, var(--c-line) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+  mask-image: linear-gradient(to bottom, transparent 4%, #000 24%, #000 70%, transparent 96%);
+  opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   Сканер
+   -------------------------------------------------------------------------- */
+.scanner {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  touch-action: pan-y;
+}
+
+.scanner__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+/* Светлый «рентгеновский стол» под линзой — как в досмотровом сканере */
+.scanner__plate,
+.scanner__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  margin: -100px 0 0 -100px;
+  border-radius: 50%;
+  transform: translate3d(-500px, -500px, 0) scale(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.scanner__plate {
+  z-index: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, #f7f6fa 0%, #e5e2ec 55%, #cdc7dc 100%);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.4), 0 0 60px 10px rgb(124 58 237 / 0.35);
+}
+
+.scanner__plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(76 29 149 / 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(76 29 149 / 0.09) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+.scanner__hud {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scanner__ring {
+  z-index: 3;
+  opacity: 0;
+}
+
+.scanner__ring svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--c-violet-3);
+  stroke-width: 1.5;
+}
+
+.scanner__ring circle {
+  stroke: var(--c-violet-4);
+  stroke-dasharray: 2 6;
+  animation: ring-spin 18s linear infinite;
+  transform-origin: 100px 100px;
+}
+
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+.scanner__readout {
+  position: absolute;
+  left: 50%;
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transform: translateX(-50%) scale(var(--inv, 1));
+}
+
+.scanner__readout {
+  top: calc(100% + 10px);
+  transform-origin: 50% 0;
+  color: var(--c-silver-1);
+}
+
+.scanner__links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.scanner__links path {
+  fill: none;
+  stroke: var(--c-violet-3);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.scanner__boxes {
+  position: absolute;
+  inset: 0;
+}
+
+/* Рамка «обнаружено» с уголками, как на досмотровом рентгене */
+.scan-box {
+  --c: var(--c-violet-3);
+  --l: 12px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  outline: 1px solid rgb(124 58 237 / 0.45);
+  background:
+    linear-gradient(var(--c), var(--c)) 0 0 / var(--l) 2px,
+    linear-gradient(var(--c), var(--c)) 0 0 / 2px var(--l),
+    linear-gradient(var(--c), var(--c)) 100% 0 / var(--l) 2px,
+    linear-gradient(var(--c), var(--c)) 100% 0 / 2px var(--l),
+    linear-gradient(var(--c), var(--c)) 0 100% / var(--l) 2px,
+    linear-gradient(var(--c), var(--c)) 0 100% / 2px var(--l),
+    linear-gradient(var(--c), var(--c)) 100% 100% / var(--l) 2px,
+    linear-gradient(var(--c), var(--c)) 100% 100% / 2px var(--l);
+  background-repeat: no-repeat;
+}
+
+.scan-box__tag {
+  position: absolute;
+  left: -1px;
+  bottom: calc(100% + 4px);
+  padding: 3px 8px;
+  white-space: nowrap;
+  background: var(--c-violet-3);
+  color: var(--c-white);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+}
+
+.scan-box__tag b {
+  font-weight: 400;
+}
+
+.scan-box.has-tag .scan-box__tag {
+  opacity: 1;
+  transform: none;
+}
+
+.scanner__fallback {
+  display: none;
+}
+
+.scanner.is-fallback .scanner__canvas,
+.scanner.is-fallback .scanner__hud,
+.scanner.is-fallback .scanner__plate {
+  display: none;
+}
+
+.scanner.is-fallback .scanner__fallback {
+  display: block;
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  width: auto;
+  height: min(52%, 60vw);
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 30px 60px rgb(124 58 237 / 0.45));
+}
+
+body.is-scanning .cursor {
+  opacity: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Подписи по углам (как на референсе)
+   -------------------------------------------------------------------------- */
+.hero__corner {
+  position: absolute;
+  top: calc(var(--nav-h) + 18px);
+  z-index: 3;
+  display: grid;
+  gap: 4px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-silver-4);
+  pointer-events: none;
+}
+
+.hero__corner b {
+  font-weight: 400;
+  color: var(--c-silver-2);
+}
+
+.hero__corner--left {
+  left: var(--gutter);
+}
+
+.hero__corner--right {
+  right: var(--gutter);
+  text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   Текст слева и карточка сервера справа
+   -------------------------------------------------------------------------- */
+.hero__copy,
+.hero__side {
+  position: relative;
+  z-index: 3;
+  align-self: center;
+}
+
+.hero__copy {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  gap: 18px;
+}
+
+.hero__side {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.hero__lead {
+  font-size: var(--text-lg);
+  line-height: 1.12;
+  text-transform: uppercase;
+  color: var(--c-silver-1);
+}
+
+.scan-list {
+  display: grid;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--c-line);
+}
+
+.scan-list__head {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-silver-3);
+}
+
+.scan-list__head b {
+  font-weight: 400;
+  color: var(--c-white);
+}
+
+.scan-list ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+}
+
+.scan-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-sm);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-silver-4);
+  transition: color var(--dur);
+}
+
+.scan-list li::before {
+  content: '';
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border: 1px solid currentColor;
+  transition: background var(--dur), border-color var(--dur), transform var(--dur) var(--ease-out);
+}
+
+.scan-list li.is-found {
+  color: var(--c-white);
+}
+
+.scan-list li.is-found::before {
+  background: var(--c-violet-2);
+  border-color: var(--c-violet-2);
+  transform: rotate(45deg);
+}
+
+.scan-list li.is-secret.is-found {
+  color: var(--c-violet-1);
+}
+
+.server-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  padding: 22px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgb(30 24 48 / 0.7), rgb(13 10 20 / 0.6));
+  border: 1px solid var(--c-line);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.server-card__label {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-silver-3);
+}
+
+.server-card__ip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  text-align: left;
+  font-size: clamp(1.5rem, 1.1rem + 1vw, 2rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.server-card__copy {
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-violet-1);
+  transition: color var(--dur-fast);
+}
+
+.server-card__ip:hover .server-card__copy {
+  color: var(--c-white);
+}
+
+/* --------------------------------------------------------------------------
+   Огромное название внизу
+   -------------------------------------------------------------------------- */
+.hero__sub {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: end;
+  z-index: 0;
+  margin-bottom: 8px;
+  font-size: var(--text-xs);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--c-silver-3);
+}
+
+.hero__title {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  z-index: 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 calc(var(--gutter) * -0.15);
+  padding-bottom: 0.05em;
+  font-size: min(15.6vw, 24vh);
+  line-height: 0.82;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.hero__title-word {
+  background: var(--g-chrome);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__title-word:last-child {
+  background: linear-gradient(180deg, #e6dbff 0%, #a47bff 45%, #4c1d95 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* --------------------------------------------------------------------------
+   Телефоны и планшеты: логотип сверху, текст под ним
+   -------------------------------------------------------------------------- */
+@media (max-width: 899px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    row-gap: 28px;
+    padding-top: var(--nav-h);
+  }
+
+  .scanner {
+    position: relative;
+    inset: auto;
+    grid-row: 1;
+    height: 60svh;
+    min-height: 380px;
+    margin: 0 calc(var(--gutter) * -1);
+  }
+
+  .hero__corner {
+    display: none;
+  }
+
+  .hero__copy {
+    grid-row: 2;
+  }
+
+  .hero__side {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .hero__sub {
+    grid-row: 4;
+    justify-self: start;
+  }
+
+  .hero__title {
+    grid-row: 5;
+    flex-direction: column;
+    font-size: 27vw;
+    line-height: 0.84;
+  }
+}

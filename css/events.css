@@ -1,0 +1,301 @@
+/* ==========================================================================
+   Ивенты: светлый «серебряный» лист с каруселью (как на референсе Polestar)
+   ========================================================================== */
+
+.events {
+  position: relative;
+  z-index: 3;
+  margin: 0 clamp(0px, 1vw, 16px);
+  padding: clamp(56px, 6vw, 96px) 0 clamp(36px, 4vw, 60px);
+  overflow: hidden;
+  border-radius: clamp(28px, 4vw, 56px);
+  background:
+    radial-gradient(60% 40% at 80% 0%, rgb(124 58 237 / 0.1), transparent 70%),
+    var(--c-paper);
+  color: var(--c-paper-ink);
+}
+
+.events .section-label {
+  color: #6c6979;
+}
+
+.events__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px 32px;
+  padding: 0 var(--gutter);
+}
+
+.events__head .section-title {
+  font-size: clamp(2.4rem, 1.2rem + 4vw, 5.4rem);
+}
+
+.carousel {
+  position: relative;
+  height: clamp(540px, 34vw + 230px, 820px);
+  margin-top: clamp(24px, 3vw, 48px);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  outline-offset: -8px;
+}
+
+.carousel__bigs {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.carousel__big {
+  grid-area: 1 / 1;
+  font-size: clamp(9rem, 31vw, 32rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: #d6d4de;
+  will-change: transform, opacity;
+}
+
+.carousel__meta {
+  position: absolute;
+  top: 8px;
+  left: var(--gutter);
+  z-index: 120;
+  display: grid;
+  gap: 10px;
+  width: min(360px, 34vw);
+  transition: opacity 0.26s, transform 0.26s var(--ease-out);
+}
+
+.carousel__meta.is-changing {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.carousel__tag {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6c6979;
+}
+
+.carousel__title {
+  font-size: clamp(2rem, 1.1rem + 2.4vw, 3.6rem);
+  color: var(--c-paper-ink);
+}
+
+.carousel__text {
+  max-width: 34ch;
+  color: #3a3746;
+}
+
+.carousel__when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-violet-3);
+}
+
+.carousel__when b {
+  font-weight: 400;
+  font-size: var(--text-lg);
+  letter-spacing: 0.02em;
+  color: var(--c-paper-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.carousel__track {
+  position: absolute;
+  inset: 0;
+}
+
+.slide {
+  position: absolute;
+  top: 57%;
+  left: 50%;
+  width: min(42vw, 760px);
+  aspect-ratio: 16 / 10;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #cfcdd8;
+  box-shadow: 0 50px 90px -40px rgb(24 12 48 / 0.6);
+  translate: -50% -50%;
+  will-change: transform;
+  transition: opacity 0.4s;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  filter: saturate(0.6) brightness(0.88);
+  transition: filter 0.6s var(--ease-out), transform 1.2s var(--ease-out);
+}
+
+.slide.is-active img {
+  filter: none;
+}
+
+.carousel.is-dragging .slide img {
+  transform: scale(1.05);
+}
+
+.slide__caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: var(--text-sm);
+  letter-spacing: 0.16em;
+  color: var(--c-white);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.7);
+}
+
+.slide__credit {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity var(--dur);
+}
+
+.slide.is-active .slide__credit {
+  opacity: 0.75;
+}
+
+.carousel__footer {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 0;
+  z-index: 120;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.carousel__dashes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.carousel__dash {
+  position: relative;
+  width: 34px;
+  height: 28px;
+}
+
+.carousel__dash::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 6px;
+  top: 50%;
+  height: 2px;
+  background: #b9b6c4;
+  transition: background var(--dur-fast), transform var(--dur) var(--ease-out);
+  transform-origin: left;
+}
+
+.carousel__dash.is-active::before {
+  background: var(--c-violet-3);
+  transform: scaleX(1.6);
+}
+
+.carousel__dash.is-active {
+  margin-right: 18px;
+}
+
+.carousel__buttons {
+  display: flex;
+  gap: 10px;
+  color: var(--c-paper-ink);
+}
+
+/* Телефоны и планшеты: текст над лентой, слайды почти на всю ширину */
+@media (max-width: 1000px) {
+  .carousel {
+    --slide-w: min(84vw, 720px);
+  }
+
+  .carousel {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .carousel__meta {
+    position: relative;
+    top: auto;
+    left: auto;
+    order: 1;
+    width: auto;
+    min-height: 15.5rem;
+    padding: 0 var(--gutter);
+  }
+
+  .carousel__track {
+    position: relative;
+    order: 2;
+    height: calc(var(--slide-w) * 0.625 + 48px);
+  }
+
+  .slide {
+    top: 50%;
+    width: var(--slide-w);
+  }
+
+  .carousel__bigs {
+    inset: auto 0 0;
+    height: calc(var(--slide-w) * 0.625 + 48px);
+    bottom: 76px;
+  }
+
+  .carousel__big {
+    font-size: 44vw;
+  }
+
+  .carousel__footer {
+    position: relative;
+    left: auto;
+    right: auto;
+    order: 3;
+    margin-top: 16px;
+    padding: 0 var(--gutter);
+  }
+
+  .round-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .carousel__dashes {
+    flex-wrap: nowrap;
+    gap: 2px;
+  }
+
+  .carousel__dash {
+    width: 22px;
+  }
+
+  .carousel__dash.is-active {
+    margin-right: 12px;
+  }
+}

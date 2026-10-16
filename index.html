@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Purple Dynasty RP — сервер GTA SA:MP</title>
+  <meta name="description" content="Purple Dynasty Role Play — сервер GTA San Andreas Multiplayer. Семьи, бизнес, криминал и ивенты каждую неделю. Скачай лаунчер и заходи.">
+  <meta name="theme-color" content="#07060b">
+  <meta property="og:title" content="Purple Dynasty RP — сервер GTA SA:MP">
+  <meta property="og:description" content="Город, деньги, семьи — и твоё имя, которое станет династией.">
+  <meta property="og:image" content="img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/oswald-cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/fx.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/events.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.min.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body class="is-loading">
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="pd-mark" viewBox="-40 -40 1796 1840">
+      <path d="M346 1760L0 1760L0 0L465 0Q611 0 696.5 65Q782 130 819 250Q856 370 856 536Q856 696 825 814.5Q794 933 714.5 998Q635 1063 489 1063L346 1063L346 1760ZM346 321L346 747L366 747Q464 747 486 692Q508 637 508 530Q508 430 486.5 375.5Q465 321 385 321ZM1322 1760L850 1760L850 0L1334 0Q1524 0 1620 105.5Q1716 211 1716 414L1716 1238Q1716 1488 1628.5 1624Q1541 1760 1322 1760ZM1204 308L1204 1449L1265 1449Q1362 1449 1362 1355L1362 447Q1362 359 1338.5 333.5Q1315 308 1243 308Z"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 26 16">
+      <path d="M0 7h20v2H0zM14 1h2v2h-2zM16 3h2v2h-2zM18 5h2v2h-2zM20 7h2v2h-2zM18 9h2v2h-2zM16 11h2v2h-2zM14 13h2v2h-2z"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 24 24">
+      <path d="M12 1.5l3.1 6.6 7.2.9-5.3 5 1.4 7.2L12 17.7l-6.4 3.5L7 14l-5.3-5 7.2-.9z"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">К содержимому</a>
+
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <svg class="preloader__mark" viewBox="-40 -40 1796 1840">
+      <use href="#pd-mark" class="preloader__outline"/>
+      <clipPath id="preloader-clip"><rect class="preloader__level" x="-40" y="-40" width="1796" height="1840"/></clipPath>
+      <use href="#pd-mark" class="preloader__fill" clip-path="url(#preloader-clip)"/>
+    </svg>
+    <div class="preloader__meta">
+      <span>Сканируем груз</span>
+      <span class="preloader__count" data-preloader-count>000</span>
+    </div>
+  </div>
+
+  <div class="cursor" aria-hidden="true">
+    <span class="cursor__dot"></span>
+    <span class="cursor__ring"><span class="cursor__label" data-cursor-label></span></span>
+  </div>
+
+  <header class="nav" data-nav>
+    <a class="nav__brand" href="#top" aria-label="Purple Dynasty — наверх">
+      <svg class="nav__mark" aria-hidden="true"><use href="#pd-mark"/></svg>
+      <span class="nav__name">Purple Dynasty</span>
+    </a>
+    <nav class="nav__links" aria-label="Разделы сайта" data-menu>
+      <a href="#about">Династия</a>
+      <a href="#roles">Роли</a>
+      <a href="#events">Ивенты</a>
+      <a href="#start">Как начать</a>
+    </nav>
+    <div class="nav__side">
+      <div class="wanted" data-wanted role="status" aria-label="Уровень розыска: 0">
+        <svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg>
+      </div>
+      <span class="online-pill" data-online><i class="online-pill__dot"></i><span data-online-text>Сервер 24/7</span></span>
+      <a class="btn btn--small btn--violet" href="#start">Играть</a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+        <span class="sr-only">Меню</span><i></i><i></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+    <a href="#about">Династия</a>
+    <a href="#roles">Роли</a>
+    <a href="#events">Ивенты</a>
+    <a href="#start">Как начать</a>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="scanner" id="scanner">
+        <div class="scanner__plate" data-scan-plate aria-hidden="true"></div>
+        <canvas class="scanner__canvas" data-scan-canvas aria-hidden="true"></canvas>
+        <img class="scanner__fallback" src="img/logo.svg" alt="" width="1796" height="1840">
+        <div class="scanner__hud" aria-hidden="true">
+          <svg class="scanner__links" data-scan-links><path/></svg>
+          <div class="scanner__boxes" data-scan-boxes></div>
+          <div class="scanner__ring" data-scan-ring>
+            <svg viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="99"/>
+              <path d="M100 0v14M100 186v14M0 100h14M186 100h14M94 100h12M100 94v12"/>
+            </svg>
+            <span class="scanner__readout" data-scan-readout>X-RAY · X 0000 · Y 0000</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__corner hero__corner--left" aria-hidden="true">
+        <span>Queue 07 · Frame <b data-frame>0001</b></span>
+        <span>PD-SCAN / X-RAY MODE</span>
+      </div>
+      <div class="hero__corner hero__corner--right" aria-hidden="true">
+        <span>Los Santos Customs</span>
+        <span>Cargo 1716×1760</span>
+      </div>
+
+      <div class="hero__copy">
+        <p class="eyebrow">(01) Сканер контрабанды</p>
+        <p class="hero__lead">
+          <span class="only-mouse">Наведи курсор на логотип</span><span class="only-touch">Коснись логотипа</span> —
+          посмотрим, что династия прячет внутри.
+        </p>
+        <div class="scan-list">
+          <div class="scan-list__head">
+            <span>Найдено</span>
+            <b data-scan-count>0/6</b>
+          </div>
+          <ul data-scan-list>
+            <li data-category="cash"><span data-label>Наличные</span></li>
+            <li data-category="glock"><span data-label>Glock 17</span></li>
+            <li data-category="ak"><span data-label>AK-47</span></li>
+            <li data-category="vest"><span data-label>Бронежилет</span></li>
+            <li data-category="ammo"><span data-label>Боекомплект</span></li>
+            <li data-category="burger" class="is-secret"><span data-label>???</span></li>
+          </ul>
+          <button class="link-btn" type="button" data-scan-auto>Автоскан <svg><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <div class="hero__side">
+        <div class="server-card">
+          <span class="server-card__label">Адрес сервера</span>
+          <button class="server-card__ip" type="button" data-copy-ip>
+            <span data-ip>127.0.0.1:7777</span>
+            <span class="server-card__copy">Копировать</span>
+          </button>
+          <a class="btn btn--violet btn--wide" href="#start">Начать играть <svg><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+
+      <h1 class="hero__title" id="hero-title">
+        <span class="sr-only">Purple Dynasty Role Play — сервер GTA San Andreas Multiplayer</span>
+        <span class="hero__title-word" aria-hidden="true">Purple</span>
+        <span class="hero__title-word" aria-hidden="true">Dynasty</span>
+      </h1>
+      <p class="hero__sub" aria-hidden="true">Role Play · San Andreas Multiplayer · 0.3.7</p>
+    </section>
+
+    <div class="tapes" aria-hidden="true">
+      <div class="tape tape--violet">
+        <div class="tape__track">
+          <span>Бизнес ✦ Семьи ✦ Криминал ✦ Госструктуры ✦ Гонки ✦ Казино ✦ Лос-Сантос ✦ Сан-Фиерро ✦ Лас-Вентурас ✦ </span>
+          <span>Бизнес ✦ Семьи ✦ Криминал ✦ Госструктуры ✦ Гонки ✦ Казино ✦ Лос-Сантос ✦ Сан-Фиерро ✦ Лас-Вентурас ✦ </span>
+        </div>
+      </div>
+      <div class="tape tape--silver">
+        <div class="tape__track tape__track--reverse">
+          <span>Purple Dynasty ✦ Role Play ✦ Since 2026 ✦ Purple Dynasty ✦ Role Play ✦ Since 2026 ✦ </span>
+          <span>Purple Dynasty ✦ Role Play ✦ Since 2026 ✦ Purple Dynasty ✦ Role Play ✦ Since 2026 ✦ </span>
+        </div>
+      </div>
+    </div>
+
+    <section class="manifesto" id="about" aria-labelledby="about-title">
+      <p class="section-label">(02) Династия</p>
+      <h2 class="manifesto__text" id="about-title" data-words>
+        Здесь нет сценария. Есть город, деньги, семьи — и&nbsp;твоё имя, которое однажды станет <em>династией.</em>
+      </h2>
+      <ul class="facts">
+        <li class="fact"><b>24/7</b><span>Город не спит — и ты не уснёшь</span></li>
+        <li class="fact"><b>0.3.7</b><span>Клиент SA-MP или open.mp</span></li>
+        <li class="fact"><b>0 ₽</b><span>Вход бесплатный, уважение — нет</span></li>
+        <li class="fact"><b>RP</b><span>Живые люди и строгие правила</span></li>
+      </ul>
+    </section>
+
+    <section class="roles" id="roles" aria-labelledby="roles-title">
+      <div class="roles__head">
+        <p class="section-label">(03) Кем ты станешь</p>
+        <h2 class="section-title" id="roles-title">Три пути.<br>Одна династия.</h2>
+        <p class="roles__hint"><span class="only-mouse">Наведи на карточку — проявится цвет.</span><span class="only-touch">Коснись карточки — проявится цвет.</span></p>
+      </div>
+      <div class="roles__grid">
+        <article class="role" data-role>
+          <div class="role__media">
+            <img class="role__img role__img--duo" src="img/roles/mafia.jpg" alt="" width="311" height="500" loading="lazy">
+            <img class="role__img role__img--color" src="img/roles/mafia.jpg" alt="Двое в строгих костюмах идут по красному коридору" width="311" height="500" loading="lazy">
+          </div>
+          <span class="role__num">01</span>
+          <div class="role__body">
+            <h3 class="role__title">Мафия</h3>
+            <p class="role__text">Семьи, сделки и уважение. Здесь договариваются в коридорах, а решают — в переулках.</p>
+            <p class="role__quote">«Бизнес. Ничего личного.»</p>
+          </div>
+        </article>
+        <article class="role role--offset" data-role>
+          <div class="role__media">
+            <img class="role__img role__img--duo role__img--top" src="img/roles/vinewood.jpg" alt="" width="787" height="1400" loading="lazy">
+            <img class="role__img role__img--color role__img--top" src="img/roles/vinewood.jpg" alt="Девушка в тёмных очках на фоне холмов Vinewood" width="787" height="1400" loading="lazy">
+          </div>
+          <span class="role__num">02</span>
+          <div class="role__body">
+            <h3 class="role__title">Vinewood</h3>
+            <p class="role__text">Слава, бизнес и красивая жизнь. Открой клуб, стань лицом города или просто купи всё, что блестит.</p>
+            <p class="role__quote">«Деньги любят, когда их показывают.»</p>
+          </div>
+        </article>
+        <article class="role" data-role>
+          <div class="role__media">
+            <img class="role__img role__img--duo role__img--bottom" src="img/roles/redcounty.jpg" alt="" width="736" height="1308" loading="lazy">
+            <img class="role__img role__img--color role__img--bottom" src="img/roles/redcounty.jpg" alt="Бородатый парень в бандане разводит руками" width="736" height="1308" loading="lazy">
+          </div>
+          <span class="role__num">03</span>
+          <div class="role__body">
+            <h3 class="role__title">Red County</h3>
+            <p class="role__text">Дальнобой, фермы и честный доллар. Начни с одного грузовика — закончи автопарком.</p>
+            <p class="role__quote">«Деревня? Нет. Логистика.»</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="events" id="events" aria-labelledby="events-title">
+      <div class="events__head">
+        <h2 class="section-title" id="events-title">Город празднует</h2>
+        <p class="section-label">(04) Ивенты<span class="only-mouse"> · тяни мышью или жми ← →</span><span class="only-touch"> · листай пальцем</span></p>
+      </div>
+      <div class="carousel" data-carousel data-cursor="drag" role="region" aria-roledescription="карусель" aria-label="Ивенты сервера. Листай стрелками влево и вправо" tabindex="0">
+        <div class="carousel__bigs" data-carousel-bigs aria-hidden="true"></div>
+        <div class="carousel__meta" data-carousel-meta>
+          <p class="carousel__tag" data-meta-tag></p>
+          <h3 class="carousel__title" data-meta-title aria-live="polite"></h3>
+          <p class="carousel__text" data-meta-text></p>
+          <p class="carousel__when"><span data-meta-state></span> <b data-meta-countdown></b></p>
+        </div>
+        <div class="carousel__track" data-carousel-track></div>
+        <div class="carousel__footer">
+          <div class="carousel__dashes" data-carousel-dashes></div>
+          <div class="carousel__buttons">
+            <button class="round-btn" type="button" data-carousel-prev aria-label="Предыдущий ивент"><svg><use href="#i-arrow"/></svg></button>
+            <button class="round-btn" type="button" data-carousel-next aria-label="Следующий ивент"><svg><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="start" id="start" aria-labelledby="start-title">
+      <div class="start__head">
+        <p class="section-label">(05) Как начать</p>
+        <h2 class="section-title" id="start-title">Три шага<br>до города</h2>
+        <div class="tabs" role="tablist" aria-label="Способ установки">
+          <button class="tabs__btn" type="button" role="tab" id="tab-launcher" aria-controls="panel-launcher" aria-selected="true" data-tab="launcher">Через лаунчер <i>рекомендуем</i></button>
+          <button class="tabs__btn" type="button" role="tab" id="tab-manual" aria-controls="panel-manual" aria-selected="false" tabindex="-1" data-tab="manual">Вручную</button>
+        </div>
+      </div>
+
+      <div class="start__body">
+        <div class="steps" role="tabpanel" id="panel-launcher" aria-labelledby="tab-launcher" data-steps>
+          <article class="step">
+            <span class="step__num">01</span>
+            <div class="step__main">
+              <h3 class="step__title">Скачай лаунчер</h3>
+              <p class="step__text">Один файл — и всё остальное он сделает сам. <span data-launcher-note>Windows 10 / 11 · около 30 МБ</span></p>
+              <a class="btn btn--violet" href="#start" data-launcher>Скачать лаунчер <svg><use href="#i-arrow"/></svg></a>
+            </div>
+            <label class="step__check"><input type="checkbox" data-step-check><span>Готово</span></label>
+          </article>
+          <article class="step">
+            <span class="step__num">02</span>
+            <div class="step__main">
+              <h3 class="step__title">Установи и запусти</h3>
+              <p class="step__text">Лаунчер сам скачает GTA San Andreas, клиент SA-MP и наши модели. Ничего не нужно искать по форумам.</p>
+            </div>
+            <label class="step__check"><input type="checkbox" data-step-check><span>Готово</span></label>
+          </article>
+          <article class="step">
+            <span class="step__num">03</span>
+            <div class="step__main">
+              <h3 class="step__title">Нажми «Играть»</h3>
+              <p class="step__text">Придумай ник в формате <b>Имя_Фамилия</b>, например <b>Tony_Montana</b>, — и добро пожаловать в Лос-Сантос.</p>
+            </div>
+            <label class="step__check"><input type="checkbox" data-step-check><span>Готово</span></label>
+          </article>
+        </div>
+
+        <div class="steps" role="tabpanel" id="panel-manual" aria-labelledby="tab-manual" data-steps hidden>
+          <article class="step">
+            <span class="step__num">01</span>
+            <div class="step__main">
+              <h3 class="step__title">Поставь GTA San Andreas</h3>
+              <p class="step__text">Нужна версия 1.0 (US) без модов — со сборками «на всё» клиент часто не запускается.</p>
+            </div>
+            <label class="step__check"><input type="checkbox" data-step-check><span>Готово</span></label>
+          </article>
+          <article class="step">
+            <span class="step__num">02</span>
+            <div class="step__main">
+              <h3 class="step__title">Скачай клиент</h3>
+              <p class="step__text">Официальный лаунчер open.mp — он же работает с SA-MP 0.3.7. Укажи папку с игрой.</p>
+              <a class="btn btn--ghost" href="https://www.open.mp/" data-client target="_blank" rel="noopener noreferrer">Сайт open.mp <svg><use href="#i-arrow"/></svg></a>
+            </div>
+            <label class="step__check"><input type="checkbox" data-step-check><span>Готово</span></label>
+          </article>
+          <article class="step">
+            <span class="step__num">03</span>
+            <div class="step__main">
+              <h3 class="step__title">Добавь сервер</h3>
+              <p class="step__text">Нажми «Добавить сервер», вставь адрес и подключись. Ник — в формате <b>Имя_Фамилия</b>.</p>
+              <button class="ip-chip" type="button" data-copy-ip><span data-ip>127.0.0.1:7777</span> <i>Копировать</i></button>
+            </div>
+            <label class="step__check"><input type="checkbox" data-step-check><span>Готово</span></label>
+          </article>
+        </div>
+
+        <aside class="start__aside">
+          <div class="progress" data-progress>
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="progress__track" cx="60" cy="60" r="52"/>
+              <circle class="progress__bar" cx="60" cy="60" r="52" data-progress-bar/>
+            </svg>
+            <div class="progress__value"><b data-progress-value>0%</b><span>готовность</span></div>
+          </div>
+          <dl class="specs">
+            <div><dt>ОС</dt><dd>Windows 7 и новее</dd></div>
+            <div><dt>Память</dt><dd>от 2 ГБ ОЗУ</dd></div>
+            <div><dt>Диск</dt><dd>4 ГБ свободно</dd></div>
+            <div><dt>Интернет</dt><dd>от 5 Мбит/с</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__col">
+        <p class="section-label">Сообщество</p>
+        <div class="socials">
+          <a class="pill" href="#" data-social="vk">VK</a>
+          <a class="pill" href="#" data-social="telegram">Telegram</a>
+          <a class="pill" href="#" data-social="discord">Discord</a>
+          <a class="pill" href="#" data-social="youtube">YouTube</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <p class="section-label">Сервер</p>
+        <button class="ip-chip ip-chip--big" type="button" data-copy-ip><span data-ip>127.0.0.1:7777</span> <i>Копировать</i></button>
+      </div>
+      <div class="footer__col footer__col--hint">
+        <p class="section-label">Psst…</p>
+        <p class="footer__hint">Набери на клавиатуре <kbd>HESOYAM</kbd>. Или <kbd>AEZAKMI</kbd>, если довёл копов кликами.</p>
+      </div>
+    </div>
+    <p class="footer__giant" aria-hidden="true">Purple Dynasty</p>
+    <div class="footer__bottom">
+      <span>© 2026 Purple Dynasty Role Play</span>
+      <span>Проект не связан с Rockstar Games и Take-Two Interactive. GTA San Andreas — товарный знак Rockstar Games.</span>
+      <span>Фото ивентов: Openverse, CC0 / Public Domain</span>
+    </div>
+  </footer>
+
+  <div class="toasts" data-toasts aria-live="polite"></div>
+  <div class="mission" data-mission aria-live="polite" hidden>
+    <p class="mission__title" data-mission-title></p>
+    <p class="mission__sub" data-mission-sub></p>
+  </div>
+  <div class="siren" data-siren aria-hidden="true"></div>
+  <noscript><style>.preloader{display:none}</style></noscript>
+</body>
+</html>

@@ -1,0 +1,681 @@
+/* ==========================================================================
+   Purple Dynasty — токены, шрифты, база, типографика, кнопки, навигация
+   ========================================================================== */
+
+/* Anton (латиница, цифры) + Oswald Bold (кириллица — у Anton её нет). Одно семейство на весь сайт. */
+@font-face {
+  font-family: 'PD Display';
+  src: url('../fonts/anton-latin.woff2') format('woff2');
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'PD Display';
+  src: url('../fonts/anton-latin-ext.woff2') format('woff2');
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB,
+    U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'PD Display';
+  src: url('../fonts/oswald-cyrillic-700.woff2') format('woff2');
+  font-display: swap;
+  size-adjust: 106%;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'PD Display';
+  src: url('../fonts/oswald-cyrillic-ext-700.woff2') format('woff2');
+  font-display: swap;
+  size-adjust: 106%;
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+:root {
+  color-scheme: dark;
+
+  --c-black: #07060b;
+  --c-ink: #0d0a14;
+  --c-ink-2: #15111f;
+  --c-ink-3: #1e1830;
+  --c-line: rgb(233 230 242 / 0.12);
+  --c-line-strong: rgb(233 230 242 / 0.24);
+  --c-white: #f3f1f7;
+  --c-silver-1: #e6e6ec;
+  --c-silver-2: #c2c4cd;
+  --c-silver-3: #8e909b;
+  --c-silver-4: #5d5f6a;
+  --c-violet-1: #d4c5ff;
+  --c-violet-2: #a47bff;
+  --c-violet-3: #7c3aed;
+  --c-violet-4: #4c1d95;
+  --c-violet-5: #1d0b3a;
+  --c-paper: #e7e6ec;
+  --c-paper-ink: #0b0910;
+
+  --g-chrome: linear-gradient(180deg, #ffffff 0%, #d9dae2 30%, #8a8d99 50%, #eceef3 66%, #a6a9b5 100%);
+  --g-violet: linear-gradient(135deg, #b99cff 0%, #7c3aed 52%, #4314a8 100%);
+
+  --font: 'PD Display', Impact, 'Arial Narrow', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-lg: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+  --text-xl: clamp(2.6rem, 1.4rem + 5vw, 6.5rem);
+  --text-mega: clamp(4.5rem, 16.4vw, 20rem);
+
+  --gutter: clamp(16px, 3.4vw, 56px);
+  --section-pad: clamp(96px, 11vw, 200px);
+  --nav-h: 76px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur: 420ms;
+  --dur-slow: 900ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--c-black);
+  color: var(--c-white);
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Плёночное зерно поверх всего сайта — «дорогая» фактура вместо плоской заливки. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { background-position: 0 0; }
+  20% { background-position: -37px 21px; }
+  40% { background-position: 29px -53px; }
+  60% { background-position: -61px -13px; }
+  80% { background-position: 43px 47px; }
+  100% { background-position: 0 0; }
+}
+
+@media (pointer: coarse) {
+  body::after {
+    animation: none;
+  }
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+em {
+  font-style: normal;
+}
+
+kbd {
+  font-family: inherit;
+  padding: 0.1em 0.45em;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 4px;
+  color: var(--c-violet-1);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-violet-2);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--c-violet-3);
+  color: var(--c-white);
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--c-violet-3);
+  transform: translateY(-160%);
+  transition: transform var(--dur-fast);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Подписи под мышь и под палец */
+.only-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .only-touch {
+    display: inline;
+  }
+  .only-mouse {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Типографика разделов
+   -------------------------------------------------------------------------- */
+.section-label,
+.eyebrow {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-silver-3);
+}
+
+.section-title {
+  font-size: var(--text-xl);
+  letter-spacing: -0.005em;
+}
+
+/* --------------------------------------------------------------------------
+   Кнопки
+   -------------------------------------------------------------------------- */
+.btn {
+  --btn-bg: var(--c-white);
+  --btn-fg: var(--c-black);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 52px;
+  padding: 0 26px;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: var(--text-sm);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.btn svg {
+  width: 22px;
+  height: 14px;
+  fill: currentColor;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 700ms var(--ease-out);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:hover svg {
+  transform: translateX(4px);
+}
+
+.btn:hover::before {
+  transform: translateX(120%);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn--violet {
+  --btn-bg: var(--g-violet);
+  --btn-fg: var(--c-white);
+  box-shadow: 0 10px 40px -12px rgb(124 58 237 / 0.7), inset 0 1px 0 rgb(255 255 255 / 0.25);
+}
+
+.btn--violet:hover {
+  box-shadow: 0 16px 50px -10px rgb(124 58 237 / 0.85), inset 0 1px 0 rgb(255 255 255 / 0.3);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--c-white);
+  border: 1px solid var(--c-line-strong);
+}
+
+.btn--small {
+  min-height: 40px;
+  padding: 0 18px;
+  font-size: var(--text-xs);
+}
+
+.btn--wide {
+  width: 100%;
+}
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-violet-1);
+}
+
+.link-btn svg {
+  width: 20px;
+  height: 12px;
+  fill: currentColor;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.link-btn:hover svg {
+  transform: translateX(4px);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.pill:hover {
+  background: var(--c-white);
+  color: var(--c-black);
+  border-color: var(--c-white);
+}
+
+.round-btn {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.round-btn svg {
+  width: 20px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.round-btn:first-child svg {
+  transform: scaleX(-1);
+}
+
+.round-btn:hover {
+  background: var(--c-paper-ink);
+  color: var(--c-paper);
+}
+
+.ip-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 44px;
+  margin-top: 18px;
+  padding: 0 8px 0 18px;
+  border-radius: 999px;
+  background: var(--c-ink-3);
+  border: 1px solid var(--c-line);
+  font-size: var(--text-base);
+  letter-spacing: 0.06em;
+  transition: border-color var(--dur-fast);
+}
+
+.ip-chip i {
+  font-style: normal;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--c-white);
+  color: var(--c-black);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ip-chip:hover {
+  border-color: var(--c-violet-2);
+}
+
+.ip-chip--big {
+  margin-top: 0;
+  font-size: var(--text-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Навигация
+   -------------------------------------------------------------------------- */
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: var(--nav-h);
+  padding: 0 var(--gutter);
+  transition: background var(--dur), backdrop-filter var(--dur), border-color var(--dur);
+  border-bottom: 1px solid transparent;
+}
+
+.nav.is-solid {
+  background: rgb(7 6 11 / 0.72);
+  backdrop-filter: blur(18px) saturate(140%);
+  border-color: var(--c-line);
+}
+
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--text-base);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav__mark {
+  width: 34px;
+  height: 35px;
+  fill: var(--c-silver-1);
+}
+
+.nav__links {
+  display: flex;
+  gap: clamp(18px, 2.6vw, 40px);
+  font-size: var(--text-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nav__links a {
+  position: relative;
+  padding: 6px 0;
+  color: var(--c-silver-2);
+  transition: color var(--dur-fast);
+}
+
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--c-violet-2);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.nav__links a:hover {
+  color: var(--c-white);
+}
+
+.nav__links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.nav__side {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.online-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-silver-2);
+}
+
+.online-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8ef0b4;
+  box-shadow: 0 0 0 0 rgb(142 240 180 / 0.6);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  70% { box-shadow: 0 0 0 9px rgb(142 240 180 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(142 240 180 / 0); }
+}
+
+.wanted {
+  display: none;
+  gap: 2px;
+}
+
+.wanted.is-active {
+  display: flex;
+}
+
+.wanted svg {
+  width: 16px;
+  height: 16px;
+  fill: transparent;
+  stroke: var(--c-silver-4);
+  stroke-width: 1.4;
+}
+
+.wanted svg.is-lit {
+  fill: var(--c-white);
+  stroke: var(--c-white);
+  animation: star-blink 0.5s steps(2) 6;
+}
+
+@keyframes star-blink {
+  50% { fill: var(--c-violet-2); stroke: var(--c-violet-2); }
+}
+
+.nav__burger {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--c-line-strong);
+}
+
+.nav__burger i {
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.nav__burger i:first-of-type {
+  top: 17px;
+}
+
+.nav__burger i:last-of-type {
+  top: 25px;
+}
+
+.nav__burger[aria-expanded='true'] i:first-of-type {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.nav__burger[aria-expanded='true'] i:last-of-type {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--nav-h) var(--gutter) 40px;
+  background: rgb(7 6 11 / 0.96);
+  backdrop-filter: blur(20px);
+}
+
+.mobile-menu[hidden] {
+  display: none;
+}
+
+.mobile-menu a {
+  font-size: clamp(2.2rem, min(14vw, 10vh), 5rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .nav__links,
+  .online-pill {
+    display: none;
+  }
+  .nav__burger {
+    display: block;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav__name {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Появление при прокрутке
+   -------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  translate: 0 40px;
+  transition: opacity var(--dur-slow) var(--ease-out), translate var(--dur-slow) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  translate: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    translate: none;
+  }
+}

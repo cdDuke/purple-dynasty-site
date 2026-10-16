@@ -1,0 +1,312 @@
+/* ==========================================================================
+   Purple Dynasty — эффекты: курсор, прелоадер, тосты, «Миссия пройдена», розыск, денежный дождь
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Курсор (только мышь)
+   -------------------------------------------------------------------------- */
+.cursor {
+  display: none;
+}
+
+@media (pointer: fine) {
+  .cursor {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur);
+  }
+  .cursor.is-ready {
+    opacity: 1;
+  }
+}
+
+.cursor__dot,
+.cursor__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.cursor__dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--c-white);
+  mix-blend-mode: difference;
+}
+
+.cursor__ring {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 1px solid rgb(233 230 242 / 0.55);
+  transition: width var(--dur) var(--ease-out), height var(--dur) var(--ease-out), margin var(--dur) var(--ease-out),
+    background var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out), opacity var(--dur-fast);
+}
+
+.cursor__label {
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-white);
+  opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+
+.cursor.is-link .cursor__ring {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-color: var(--c-violet-2);
+}
+
+.cursor.is-drag .cursor__ring {
+  width: 104px;
+  height: 104px;
+  margin: -52px 0 0 -52px;
+  background: var(--c-violet-3);
+  border-color: rgb(255 255 255 / 0.5);
+  box-shadow: 0 12px 40px -8px rgb(124 58 237 / 0.7);
+}
+
+.cursor.is-drag .cursor__label {
+  opacity: 1;
+}
+
+.cursor.is-dragging .cursor__ring {
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+}
+
+.cursor.is-hidden .cursor__ring,
+.cursor.is-hidden .cursor__dot {
+  opacity: 0;
+}
+
+@media (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor a,
+  body.has-cursor button,
+  body.has-cursor label,
+  body.has-cursor [data-carousel] {
+    cursor: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Прелоадер
+   -------------------------------------------------------------------------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: grid;
+  place-items: center;
+  background: var(--c-black);
+  transition: transform 1s var(--ease-in-out), visibility 0s linear 1s;
+}
+
+.preloader.is-done {
+  transform: translateY(-100%);
+  visibility: hidden;
+}
+
+.preloader__mark {
+  width: min(28vw, 180px);
+  height: auto;
+}
+
+.preloader__outline {
+  fill: none;
+  stroke: var(--c-silver-4);
+  stroke-width: 10;
+}
+
+.preloader__fill {
+  fill: var(--c-silver-1);
+}
+
+.preloader__level {
+  transform-origin: 50% 100%;
+  transform: scaleY(var(--level, 0));
+  transition: transform 0.25s linear;
+}
+
+.preloader__meta {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-silver-3);
+}
+
+.preloader__count {
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 0.8;
+  letter-spacing: 0;
+  color: var(--c-white);
+}
+
+body.is-loading {
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Тосты, «Миссия пройдена», мигалки розыска, денежный дождь
+   -------------------------------------------------------------------------- */
+.toasts {
+  position: fixed;
+  left: var(--gutter);
+  bottom: 24px;
+  z-index: 120;
+  display: grid;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgb(21 17 31 / 0.92);
+  border: 1px solid var(--c-line-strong);
+  backdrop-filter: blur(12px);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  animation: toast-in var(--dur) var(--ease-out);
+}
+
+.toast b {
+  color: var(--c-violet-1);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.toast.is-leaving {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--dur), transform var(--dur);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+.mission {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.mission[hidden] {
+  display: none;
+}
+
+.mission::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(55% 32% at 50% 50%, rgb(7 6 11 / 0.82), transparent 75%);
+  animation: fade-in 0.4s var(--ease-out) both;
+}
+
+.mission.is-leaving::before {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+.mission__title {
+  font-size: clamp(3rem, 10vw, 9rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  background: var(--g-chrome);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 30px rgb(0 0 0 / 0.8));
+  animation: mission-in 0.7s var(--ease-out) both;
+}
+
+.mission__sub {
+  margin-top: 10px;
+  font-size: var(--text-lg);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--c-violet-1);
+  text-shadow: 0 2px 20px rgb(0 0 0 / 0.9);
+  animation: mission-in 0.7s 0.15s var(--ease-out) both;
+}
+
+.mission.is-leaving .mission__title,
+.mission.is-leaving .mission__sub {
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+@keyframes mission-in {
+  from { opacity: 0; transform: scale(0.86); letter-spacing: 0.3em; }
+}
+
+.siren {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: inset 0 0 120px 20px var(--c-violet-3);
+}
+
+.siren.is-on {
+  animation: siren 0.45s steps(2) 6;
+}
+
+@keyframes siren {
+  0% { opacity: 1; box-shadow: inset 0 0 140px 24px var(--c-violet-3); }
+  50% { opacity: 1; box-shadow: inset 0 0 140px 24px var(--c-white); }
+}
+
+.bill {
+  position: fixed;
+  top: -60px;
+  z-index: 125;
+  width: 92px;
+  height: 40px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: linear-gradient(135deg, #e9e6f3, #b9a8ee 60%, #7c3aed);
+  border: 1px solid rgb(255 255 255 / 0.5);
+  color: var(--c-violet-5);
+  font-size: 1.1rem;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.35);
+}
